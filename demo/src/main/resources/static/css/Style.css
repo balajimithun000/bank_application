@@ -1,0 +1,275 @@
+/* ------------------------------
+   GLOBAL STYLES
+--------------------------------*/
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #0a2e63, #1f4ba8);
+    color: #fff;
+}
+
+/* ------------------------------
+   DASHBOARD STYLES
+--------------------------------*/
+.dashboard {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+}
+
+h2 {
+    margin-top: 30px;
+    font-size: 22px;
+    color: #ffdf6b;
+}
+
+p span {
+    font-weight: bold;
+    color: #94ff94;
+    font-size: 20px;
+}
+
+.dashboard p {
+    font-size: 18px;
+}
+
+input[type="number"], input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    background: rgba(255,255,255,0.8);
+    transition: 0.3s;
+}
+
+input:focus {
+    background: #fff;
+    box-shadow: 0 0 10px #ffe47e;
+    transform: scale(1.03);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #ffba08;
+    color: #000;
+    font-size: 17px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ffd369;
+    transform: scale(1.05);
+}
+
+.depositbox, form {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 20px;
+    border-radius: 14px;
+    margin-top: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+a {
+    color: #ff6767;
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: #ff3b3b;
+    text-decoration: underline;
+}
+
+/* ------------------------------
+   LOGIN & REGISTER STYLES
+--------------------------------*/
+body.login-bg, body.register-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container, .register-container {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    padding: 40px 30px;
+    border-radius: 18px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    color: #fff;
+}
+
+.login-container h2, .register-container h2 {
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #ffdf6b;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background: rgba(255,255,255,0.8);
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    background: #fff;
+    box-shadow: 0 0 10px #ffe47e;
+    transform: scale(1.03);
+}
+
+.input-group label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    color: #555;
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 10px;
+    font-size: 13px;
+    color: #ffdf6b;
+    font-weight: bold;
+    background: rgba(10, 46, 99, 0.8);
+    padding: 0 4px;
+    border-radius: 4px;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #ffba08;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+    color: #000;
+}
+
+.btn:hover {
+    background: #ffd369;
+    transform: scale(1.05);
+}
+
+.register-text {
+    margin-top: 20px;
+    font-size: 15px;
+    color: #fff;
+}
+
+.register-text a {
+    color: #ffdf6b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-text a:hover {
+    color: #ffd369;
+    text-decoration: underline;
+}
+
+/* ------------------------------
+   TRANSACTION PAGE STYLES
+--------------------------------*/
+.transaction-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: #fff;
+}
+
+.transaction-table th, .transaction-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    text-align: left;
+}
+
+.transaction-table th {
+    background: rgba(255,255,255,0.1);
+    color: #ffdf6b;
+}
+
+.transaction-table tr:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.01);
+    transition: 0.2s;
+}
+
+/* ------------------------------
+   RESPONSIVE DESIGN
+--------------------------------*/
+@media (max-width: 600px) {
+    .dashboard, .transaction-container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    button {
+        font-size: 16px;
+    }
+
+    .login-container, .register-container {
+        padding: 30px 20px;
+    }
+
+    .login-container h2, .register-container h2 {
+        font-size: 24px;
+    }
+}
+

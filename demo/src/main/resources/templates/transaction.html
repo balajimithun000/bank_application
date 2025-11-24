@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction History</title>
+    <link rel="stylesheet" th:href="@{/css/Style.css}">
+</head>
+
+<body>
+
+<div class="transaction-container">
+
+    <h1>Transaction History</h1>
+
+    <div th:if="${transactions.isEmpty()}">
+        <p>No transactions found.</p>
+    </div>
+
+    <table class="transaction-table" th:if="${!transactions.isEmpty()}">
+        <thead>
+        <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="t : ${transactions}">
+            <td th:text="${t.account != null ? t.account.username : '-'}"></td>
+            <td th:text="${t.type.startsWith('Transfer') ? t.type.substring(t.type.indexOf('to')+3) : '-'}"></td>
+            <td th:text="${t.type}"></td>
+            <td th:text="${t.amount}"></td>
+            <td th:text="${#temporals.format(t.timestamp, 'dd-MM-yyyy HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p><a th:href="@{/dashboard}">Back to Dashboard</a></p>
+
+</div>
+
+</body>
+</html>
