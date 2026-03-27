@@ -1,4 +1,6 @@
-
+/* ------------------------------
+   GLOBAL STYLES
+--------------------------------*/
 body {
     margin: 0;
     padding: 0;
@@ -7,6 +9,9 @@ body {
     color: #fff;
 }
 
+/* ------------------------------
+   DASHBOARD STYLES
+--------------------------------*/
 .dashboard {
     width: 90%;
     max-width: 900px;
@@ -97,7 +102,9 @@ a:hover {
     text-decoration: underline;
 }
 
-
+/* ------------------------------
+   LOGIN & REGISTER STYLES
+--------------------------------*/
 body.login-bg, body.register-bg {
     display: flex;
     justify-content: center;
@@ -203,7 +210,9 @@ body.login-bg, body.register-bg {
     text-decoration: underline;
 }
 
-
+/* ------------------------------
+   TRANSACTION PAGE STYLES
+--------------------------------*/
 .transaction-container {
     width: 90%;
     max-width: 900px;
@@ -239,7 +248,9 @@ body.login-bg, body.register-bg {
     transition: 0.2s;
 }
 
-
+/* ------------------------------
+   RESPONSIVE DESIGN
+--------------------------------*/
 @media (max-width: 600px) {
     .dashboard, .transaction-container {
         padding: 20px;
