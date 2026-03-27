@@ -1,145 +1,129 @@
-// ---------- REGISTER ----------
 document.addEventListener("DOMContentLoaded", () => {
-    const registerForm = document.getElementById("registerForm");
-    if(registerForm){
-        registerForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const username = e.target.username.value;
-            const password = e.target.password.value;
 
-            try {
-                const res = await fetch("/register", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `username=${username}&password=${password}`
-                });
-                if(res.redirected){
-                    window.location.href = res.url;
-                } else {
-                    alert("Registration failed!");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Error during registration");
+    // ================= FETCH ACCOUNT =================
+    async function fetchAccount() {
+        try {
+            const res = await fetch("/dashboard/account");
+
+            if (!res.ok) return;
+
+            const account = await res.json();
+
+            if (!account || account.balance === undefined) return;
+
+            const balanceEl = document.getElementById("actualBalance");
+
+            if (balanceEl) {
+                balanceEl.innerText = account.balance;
             }
-        });
+
+        } catch (err) {
+            console.error("Fetch Account Error:", err);
+        }
     }
 
-    // ---------- LOGIN ----------
-    const loginForm = document.getElementById("loginForm");
-    if(loginForm){
-        loginForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const username = e.target.username.value;
-            const password = e.target.password.value;
+    // ================= DEPOSIT =================
+    const depositForm = document.getElementById("depositForm");
 
-            try {
-                const res = await fetch("/login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `username=${username}&password=${password}`
-                });
-                if(res.redirected){
-                    window.location.href = res.url;
-                } else {
-                    alert("Login failed!");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Error during login");
-            }
+    depositForm?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const amount = parseFloat(e.target.amount.value);
+
+        if (isNaN(amount) || amount <= 0) {
+            alert("Enter valid amount");
+            return;
+        }
+
+        const res = await fetch("/deposit", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `amount=${amount}`
         });
-    }
 
-    // ---------- DASHBOARD ----------
-   document.addEventListener("DOMContentLoaded", () => {
+        if (!res.ok) {
+            alert("Deposit failed");
+            return;
+        }
 
-       const accountInfo = document.getElementById("account-info");
-       const transactionsList = document.getElementById("transactions");
-       const showTransactionsBtn = document.getElementById("showTransactionsBtn");
+        await fetchAccount();
+        e.target.reset();
+    });
 
-       // Fetch account info
-       async function fetchAccount() {
-           try {
-               const res = await fetch("/dashboard/account"); // You need this endpoint returning JSON
-               const account = await res.json();
-               accountInfo.innerHTML = `
-                   <p><strong>Username:</strong> ${account.username}</p>
-                   <p><strong>Balance:</strong> $${account.balance}</p>
-               `;
-           } catch (err) {
-               console.error(err);
-               accountInfo.innerHTML = `<p>Error loading account info.</p>`;
-           }
-       }
+    // ================= WITHDRAW =================
+    const withdrawForm = document.getElementById("withdrawForm");
 
-       fetchAccount();
+    withdrawForm?.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-       // Deposit
-       const depositForm = document.getElementById("depositForm");
-       depositForm?.addEventListener("submit", async (e) => {
-           e.preventDefault();
-           const amount = e.target.amount.value;
-           await fetch("/deposit", {
-               method: "POST",
-               headers: { "Content-Type": "application/x-www-form-urlencoded" },
-               body: `amount=${amount}`
-           });
-           fetchAccount();
-           e.target.reset();
-       });
+        const amount = parseFloat(e.target.amount.value);
 
-       // Withdraw
-       const withdrawForm = document.getElementById("withdrawForm");
-       withdrawForm?.addEventListener("submit", async (e) => {
-           e.preventDefault();
-           const amount = e.target.amount.value;
-           await fetch("/withdraw", {
-               method: "POST",
-               headers: { "Content-Type": "application/x-www-form-urlencoded" },
-               body: `amount=${amount}`
-           });
-           fetchAccount();
-           e.target.reset();
-       });
+        const balanceText = document.getElementById("actualBalance").innerText;
+        const balance = parseFloat(balanceText.replace(/[^\d.]/g, ""));
 
-       // Transfer
-       const transferForm = document.getElementById("transferForm");
-       transferForm?.addEventListener("submit", async (e) => {
-           e.preventDefault();
-           const toUsername = e.target.toUsername.value;
-           const amount = e.target.amount.value;
-           await fetch("/transfer", {
-               method: "POST",
-               headers: { "Content-Type": "application/x-www-form-urlencoded" },
-               body: `toUsername=${toUsername}&amount=${amount}`
-           });
-           fetchAccount();
-           e.target.reset();
-       });
+        if (isNaN(amount) || amount <= 0) {
+            alert("Enter valid amount");
+            return;
+        }
 
-       // Fetch transactions
-       async function fetchTransactions() {
-           try {
-               const res = await fetch("/transaction/json"); // JSON endpoint
-               const transactions = await res.json();
-               transactionsList.innerHTML = "";
-               transactions.forEach(t => {
-                   const li = document.createElement("li");
-                   const date = new Date(t.timestamp);
-                   li.textContent = `${t.type} - $${t.amount} on ${date.toLocaleString()} to ${t.toAccount ? t.toAccount.username : '-'}`;
-                   transactionsList.appendChild(li);
-               });
-           } catch (err) {
-               console.error(err);
-               transactionsList.innerHTML = "<li>Error loading transactions</li>";
-           }
-       }
+        if (amount > balance) {
+            alert("Insufficient balance");
+            return;
+        }
 
-       // Show transactions on button click
-       showTransactionsBtn?.addEventListener("click", fetchTransactions);
+        const remaining = balance - amount;
 
-   });
+        if (remaining < 5000) {
+            alert("Warning: Balance will go below ₹5000. Penalty ₹500 will be charged.");
+        }
 
+        const res = await fetch("/withdraw", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `amount=${amount}`
+        });
+
+        if (!res.ok) {
+            alert("Withdraw failed");
+            return;
+        }
+
+        await fetchAccount();
+        e.target.reset();
+    });
+
+    // ================= TRANSFER =================
+    const transferForm = document.getElementById("transferForm");
+
+    transferForm?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const toUsername = e.target.toUsername.value.trim();
+        const amount = parseFloat(e.target.amount.value);
+
+        if (!toUsername) {
+            alert("Enter recipient username");
+            return;
+        }
+
+        if (isNaN(amount) || amount <= 0) {
+            alert("Enter valid amount");
+            return;
+        }
+
+        const res = await fetch("/transfer", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `toUsername=${toUsername}&amount=${amount}`
+        });
+
+        if (!res.ok) {
+            alert("Transfer failed");
+            return;
+        }
+
+        await fetchAccount();
+        e.target.reset();
+    });
 
 });
